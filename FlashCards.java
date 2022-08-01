@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 // HasherBytes Flashcards//
@@ -36,12 +40,7 @@ public class FlashCards {
             
             
             System.out.println("What is " + i);
-            System.out.println("Type " + cardSet.get(i));
             String askResult = reader.nextLine();
-            //System.out.println(askResult);
-            //String result = cardSet.get(i);
-            
-        
             if (cardSet.get(i).equals(askResult)){
                 System.out.println("Correct!");
                 
@@ -54,7 +53,37 @@ public class FlashCards {
         }
     }
 
-    public static void main(String [] args) {
+    /**
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     */
+    public void writeOut() throws FileNotFoundException, UnsupportedEncodingException{
+        FileOutputStream outputStream = null;
+        System.out.println("What is your set called?");
+        String name = reader.nextLine();
+        try {
+            outputStream = new FileOutputStream(name+".text");
+            String fileContent = cardSet.toString();
+            byte[] strToBytes = fileContent.getBytes();
+            outputStream.write(strToBytes);
+    }
+        catch (IOException e) {
+            System.out.print(e.getMessage());
+        }
+        finally {
+            if (outputStream != null) {
+                try { 
+                    outputStream.close();
+                }
+                catch (IOException e){
+                    System.out.print(e.getMessage());
+                }
+            }
+        }
+        
+    }
+
+    public static void main(String [] args) throws FileNotFoundException, UnsupportedEncodingException {
         FlashCards firstSet = new FlashCards(keyOf, valuesOf, cardSet);
         int i = 0;
         while (i < 2){
@@ -62,6 +91,7 @@ public class FlashCards {
             i++;
         }
         firstSet.reviewTerms();
+        firstSet.writeOut();
         System.out.println(cardSet);
         System.out.println("Hello");
     }
