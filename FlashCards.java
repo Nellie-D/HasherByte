@@ -1,25 +1,37 @@
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 // HasherBytes Flashcards//
 
 public class FlashCards { 
+    
+    
     static String keyOf;
     static String valuesOf;
     static HashMap<String, String> cardSet = new HashMap<String, String>();
+   
+    
 
 
     public FlashCards(String keyA, String valueA, HashMap<String, String> cardA){
         keyOf = keyA;
         valuesOf = valueA;
         cardSet = cardA;
-       
+        
+        
     }
 
     private Scanner reader = new Scanner(System.in);
+    
+    /*public void action(String chooseAction){
+        System.out.println("Choose an action: ");
+        
+        chooseAction = reader.nextLine();
+        
+
+    }*/
 
     public HashMap<String, String> setBuilder(){
         System.out.println("What is the term?");
@@ -60,9 +72,9 @@ public class FlashCards {
     public void writeOut() throws FileNotFoundException, UnsupportedEncodingException{
         FileOutputStream outputStream = null;
         System.out.println("What is your set called?");
-        String name = reader.nextLine();
+        String nameSet = reader.nextLine();
         try {
-            outputStream = new FileOutputStream(name+".text");
+            outputStream = new FileOutputStream(nameSet+".txt");
             String fileContent = cardSet.toString();
             byte[] strToBytes = fileContent.getBytes();
             outputStream.write(strToBytes);
@@ -83,16 +95,53 @@ public class FlashCards {
         
     }
 
-    public static void main(String [] args) throws FileNotFoundException, UnsupportedEncodingException {
+    public void readIn() throws Exception{
+        System.out.println("What is your file's name?");
+        String nameMe = reader.nextLine() + ".txt";
+        
+
+        Path pathing = Paths.get(nameMe);
+        String myPath = pathing.toString();
+        FileReader takeIn = new FileReader(myPath);
+        int i;
+        while ((i = takeIn.read()) != -1){
+            System.out.print((char)i);
+        }
+        takeIn.close();
+    }
+
+
+
+    public static void main(String [] args) throws Exception {
         FlashCards firstSet = new FlashCards(keyOf, valuesOf, cardSet);
         int i = 0;
-        while (i < 2){
-            firstSet.setBuilder();
-            i++;
+        String A = "A";
+        String B = "B";
+        System.out.println("Please choose to build (A) or to review a previous set (B)");
+        Scanner mainRead = new Scanner(System.in);
+        String chooseAction = mainRead.nextLine();
+        if (chooseAction.equals(A)){
+            while (i < 3){
+                firstSet.setBuilder();
+                i++;
+            }
+            firstSet.writeOut();
         }
-        firstSet.reviewTerms();
-        firstSet.writeOut();
-        System.out.println(cardSet);
-        System.out.println("Hello");
+        else if (chooseAction.equals(B)){
+            firstSet.readIn();
+            firstSet.reviewTerms();
+        }
+        else {
+            System.out.println("Not a valid choice.");
+        }
+        mainRead.close();
+        }
+        
+        //firstSet.reviewTerms();
+        //firstSet.writeOut();
+        //System.out.println(cardSet);
+       // firstSet.readIn();
+       
+
     }
-}
+
