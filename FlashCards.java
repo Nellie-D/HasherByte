@@ -168,18 +168,7 @@ public class FlashCards {
                 //takeIn.close();
                 return cardSet;
             }
-        
-        
-
-        
-       
-
-
-   
-    
-
-
-
+  
     public static void main(String [] args) throws Exception {
         FlashCards firstSet = new FlashCards(keyOf, valuesOf, cardSet);
         int i = 0;
@@ -188,31 +177,43 @@ public class FlashCards {
 
         String B = "B";
         String b = "b";
-        System.out.println("Please choose to build (A) or to review a previous set (B)");
-        System.out.println("Press Z to escape");
+       
+      
         Scanner mainRead = new Scanner(System.in);
+        System.out.println("Please choose to build (A) or to review a previous set (B)");
+            
         String chooseAction = mainRead.nextLine();
-        //String stopper = mainRead.nextLine();
-        //String stopCode = "Z";
-        
+        int j = 0;
+        while (j == 0){
+            
             if (chooseAction.equals(A) || chooseAction.equals(a)){
-                while (i < 3){
+                int f;
+                System.out.println("How many terms are in this set?");
+                f = mainRead.nextInt();
+                while (i < f){
                     firstSet.setBuilder();
-                    i++;
+                    i++; 
                 }
                 firstSet.writeOut();
+                System.out.println("Please choose to build (A) or to review a previous set (B)");
+                chooseAction = mainRead.nextLine();
             }
             else if (chooseAction.equals(B) || chooseAction.equals(b)){
                 firstSet.readIn();
                 firstSet.reviewTerms();
+                System.out.println("Please choose to build (A) or to review a previous set (B)");
+                chooseAction = mainRead.nextLine();
             }
-            else {
-                System.out.println("Not a valid choice.");
+            else if (!chooseAction.equals(A) || !chooseAction.equals(a) || !chooseAction.equals(B) || !chooseAction.equals(b)) {
+                System.out.println("Please choose to build (A) or to review a previous set (B)");               
+                chooseAction = mainRead.nextLine();
+            }
+            System.out.println("Press 0 to continue");
+            j = mainRead.nextInt();
             }
             mainRead.close();
-            }
-        
-        
+    }
+    
         //firstSet.reviewTerms();
         //firstSet.writeOut();
         //System.out.println(cardSet);
