@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -5,7 +6,7 @@ import java.util.*;
 
 // HasherBytes Flashcards//
 
-public class FlashCards { 
+public class FlashCardMain { 
     
     
     static String keyOf;
@@ -15,7 +16,7 @@ public class FlashCards {
     
 
 
-    public FlashCards(String keyA, String valueA, HashMap<String, String> cardA){
+    public FlashCardMain(String keyA, String valueA, HashMap<String, String> cardA){
         keyOf = keyA;
         valuesOf = valueA;
         cardSet = cardA;
@@ -154,6 +155,8 @@ public class FlashCards {
         }
     }
 
+   
+
     // https://www.geeksforgeeks.org/reading-text-file-into-java-hashmap/
                 //System.out.println(takeIn.readLine());
                 
@@ -168,9 +171,11 @@ public class FlashCards {
                 //takeIn.close();
                 return cardSet;
             }
+
+
   
     public static void main(String [] args) throws Exception {
-        FlashCards firstSet = new FlashCards(keyOf, valuesOf, cardSet);
+        FlashCardMain firstSet = new FlashCardMain(keyOf, valuesOf, cardSet);
         int i = 0;
         String A = "A";
         String a = "a";
@@ -179,40 +184,41 @@ public class FlashCards {
         String b = "b";
        
       
-        Scanner mainRead = new Scanner(System.in);
-        System.out.println("Please choose to build (A) or to review a previous set (B)");
-            
-        String chooseAction = mainRead.nextLine();
-        int j = 0;
+        Scanner choiceReader = new Scanner(System.in);
+        Scanner loopReader = new Scanner(System.in);
+        Scanner mainReader = new Scanner(System.in);
+       
+        String chooseAction;
+        System.out.println("Press 0 to begin: ");
+        int j = loopReader.nextInt();
         while (j == 0){
             
+            System.out.println("Please choose to build (A) or to review a previous set (B)");
+            chooseAction = choiceReader.nextLine();
             if (chooseAction.equals(A) || chooseAction.equals(a)){
                 int f;
                 System.out.println("How many terms are in this set?");
-                f = mainRead.nextInt();
+                f = mainReader.nextInt();
                 while (i < f){
                     firstSet.setBuilder();
                     i++; 
                 }
-                firstSet.writeOut();
-                System.out.println(" main if Please choose to build (A) or to review a previous set (B)");
-                chooseAction = mainRead.nextLine();
+                firstSet.writeOut(); 
             }
             else if (chooseAction.equals(B) || chooseAction.equals(b)){
                 firstSet.readIn();
                 firstSet.reviewTerms();
-                System.out.println(" second else Please choose to build (A) or to review a previous set (B)");
-                chooseAction = mainRead.nextLine();
             }
-            else  {
-                System.out.println(" last else Not a valid input: ");               
-                chooseAction = mainRead.nextLine();
+            else /*(!chooseAction.equals(A) || !chooseAction.equals(a) || !chooseAction.equals(B) || !chooseAction.equals(b)) */{
+                System.out.println(" last else Not a valid input: ");       
+                System.out.println("Do you want to continue? Press 0 to exit: ");
+                j = loopReader.nextInt();        
             }
-            System.out.println("Press 0 to continue");
-            j = mainRead.nextInt();
-
-            }
-            mainRead.close();
+            
+        }
+            mainReader.close();
+            choiceReader.close();
+            loopReader.close();
     }
     
         //firstSet.reviewTerms();
