@@ -20,19 +20,11 @@ public class FlashCardMain {
         keyOf = keyA;
         valuesOf = valueA;
         cardSet = cardA;
-        
+  
         
     }
 
     private Scanner reader = new Scanner(System.in);
-    
-    /*public void action(String chooseAction){
-        System.out.println("Choose an action: ");
-        
-        chooseAction = reader.nextLine();
-        
-
-    }*/
 
     public HashMap<String, String> setBuilder(){
         System.out.println("What is the term?");
@@ -48,7 +40,8 @@ public class FlashCardMain {
     }
 
     public void reviewTerms(){
-        
+        double correctIter = 0;
+        double incorrectIter = 0;
         for (String i : cardSet.keySet()){
             
             
@@ -56,14 +49,20 @@ public class FlashCardMain {
             String askResult = reader.nextLine();
             if (cardSet.get(i).equals(askResult)){
                 System.out.println("Correct!");
-                
+                correctIter++;
             }
             else {
                 System.out.println("Sorry - that's incorrect.");
-                
+                incorrectIter++;
             }
-        
+            
         }
+        double gradePercent = correctIter / cardSet.size();
+        System.out.print("You got " + correctIter + " terms correct, ");
+        System.out.println("and " + incorrectIter + " terms incorrect.");
+
+        System.out.println("Grade = " + gradePercent*100 + "%");
+        cardSet.clear();
     }
 
     /**
@@ -83,16 +82,13 @@ public class FlashCardMain {
                 writer.write(entry.getKey() + ":" + entry.getValue());
                 writer.newLine();
             }
+            cardSet.clear();
+            //clearing the cardSet is meant to ensure that values created before a review session
+            // do not unintentionally contaminate a review file by adding to the hashmap
             writer.flush();
+            writer.close();
 
-            //String fileContent = cardSet.toString();
-            // come back here and make sure you iterate through this to print these
-            // separately, without the curly braces so that it can be easily read back and
-            // iterated through during the read in
-            //byte[] strToBytes = fileContent.getBytes();
-            //outputStream.write(strToBytes);
-         
-            
+
         }
     
         catch (IOException e) {
@@ -112,16 +108,15 @@ public class FlashCardMain {
     public HashMap<String, String> readIn() throws Exception{
         System.out.println("What is your file's name?");
         String nameMe = reader.nextLine() + ".txt";
-        
-
+     
         Path pathing = Paths.get(nameMe);
         String myPath = pathing.toString();
-        //FileReader takeIn = new FileReader(myPath);
         BufferedReader takeIn = new BufferedReader(new FileReader(myPath));
   
         // create BufferedReader object from the File
     
         try {
+
         // read file line by line
         
         String line = null;
@@ -154,21 +149,7 @@ public class FlashCardMain {
             };
         }
     }
-
-   
-
-    // https://www.geeksforgeeks.org/reading-text-file-into-java-hashmap/
-                //System.out.println(takeIn.readLine());
-                
-               /*  for (int i = 1; takeIn.read() != -1; i++){
-                    System.out.print((char)i);
-                    String mapper = String.valueOf((char)i);
-                    System.out.println(mapper);
-                    cardSet.put(String.valueOf((char)i), String.valueOf((char)i-1));
-                    System.out.println(cardSet);
-
-                } */ // warning: the above code prints asciimath as the hashmap
-                //takeIn.close();
+                takeIn.close();
                 return cardSet;
             }
 
@@ -176,44 +157,59 @@ public class FlashCardMain {
   
     public static void main(String [] args) throws Exception {
         FlashCardMain firstSet = new FlashCardMain(keyOf, valuesOf, cardSet);
-        int i = 0;
+        
         String A = "A";
         String a = "a";
 
         String B = "B";
         String b = "b";
-       
+        String E = "E";
       
         Scanner choiceReader = new Scanner(System.in);
         Scanner loopReader = new Scanner(System.in);
         Scanner mainReader = new Scanner(System.in);
        
         String chooseAction;
+        System.out.println("Press E to exit after/before reviewing/building a set. ");
         System.out.println("Press 0 to begin: ");
         int j = loopReader.nextInt();
-        while (j == 0){
-            
+        
+     
+        while (j == 0) {
             System.out.println("Please choose to build (A) or to review a previous set (B)");
+        
+            int i = 0;
             chooseAction = choiceReader.nextLine();
+
             if (chooseAction.equals(A) || chooseAction.equals(a)){
+                System.out.println("firstif");
                 int f;
                 System.out.println("How many terms are in this set?");
-                f = mainReader.nextInt();
+                f = loopReader.nextInt();
                 while (i < f){
                     firstSet.setBuilder();
                     i++; 
                 }
-                firstSet.writeOut(); 
+                firstSet.writeOut();
+                 
             }
+
             else if (chooseAction.equals(B) || chooseAction.equals(b)){
+                System.out.println("secondif");
                 firstSet.readIn();
                 firstSet.reviewTerms();
+
             }
-            else /*(!chooseAction.equals(A) || !chooseAction.equals(a) || !chooseAction.equals(B) || !chooseAction.equals(b)) */{
-                System.out.println(" last else Not a valid input: ");       
-                System.out.println("Do you want to continue? Press 0 to exit: ");
-                j = loopReader.nextInt();        
+            else {
+                System.out.println("LastIF");
+
+                
+                if (chooseAction.equals(E)){
+                    j++;
+                }
+    
             }
+        
             
         }
             mainReader.close();
