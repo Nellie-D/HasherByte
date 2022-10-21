@@ -1,5 +1,6 @@
 
 import java.io.*;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -27,13 +28,33 @@ public class FlashCardMain {
     private Scanner reader = new Scanner(System.in);
 
     public HashMap<String, String> setBuilder(){
-        System.out.println("What is the term?");
-        String newKey = reader.nextLine();
-        keyOf = newKey;
-        System.out.println("What is the definition?");
-        String newValue = reader.nextLine();
-        valuesOf = newValue;
-        cardSet.put(newKey, newValue);
+        String DONE = "DONE";
+        boolean go = false;
+        System.out.println("Type DONE at any point when finished");
+    
+        while (!go){
+            System.out.println("What is the term?");
+            String newKey = reader.nextLine();
+            if (newKey.equals(DONE)){
+                go = true;
+            }
+            else {
+                keyOf = newKey;
+                System.out.println("What is the definition?");
+                String newValue = reader.nextLine();
+                if (newValue.equals(DONE)){
+                    go = true;
+                }
+                else {
+                    valuesOf = newValue;
+                    
+                }
+                cardSet.put(newKey, newValue);
+            }
+          
+            
+            
+        }
         
         return cardSet;
 
@@ -96,6 +117,7 @@ public class FlashCardMain {
         }
         finally {
                 try { 
+                    writer.flush();
                     writer.close();
                 }
                 catch (Exception e){
@@ -163,47 +185,40 @@ public class FlashCardMain {
 
         String B = "B";
         String b = "b";
-        String E = "E";
+        String E = "END";
       
         Scanner choiceReader = new Scanner(System.in);
         Scanner loopReader = new Scanner(System.in);
         Scanner mainReader = new Scanner(System.in);
        
         String chooseAction;
-        System.out.println("Press E to exit after/before reviewing/building a set. ");
-        System.out.println("Press 0 to begin: ");
-        int j = loopReader.nextInt();
+        System.out.println("Type END to exit after/before reviewing/building a set. ");
+        int j = 0;
         
      
         while (j == 0) {
             System.out.println("Please choose to build (A) or to review a previous set (B)");
         
-            int i = 0;
+            
             chooseAction = choiceReader.nextLine();
 
             if (chooseAction.equals(A) || chooseAction.equals(a)){
-                System.out.println("firstif");
-                int f;
-                System.out.println("How many terms are in this set?");
-                f = loopReader.nextInt();
-                while (i < f){
-                    firstSet.setBuilder();
-                    i++; 
-                }
+                
+               
+                firstSet.setBuilder();
+                
                 firstSet.writeOut();
                  
             }
 
             else if (chooseAction.equals(B) || chooseAction.equals(b)){
-                System.out.println("secondif");
+                
                 firstSet.readIn();
                 firstSet.reviewTerms();
 
             }
             else {
-                System.out.println("LastIF");
-
-                
+                                
                 if (chooseAction.equals(E)){
                     j++;
                 }
