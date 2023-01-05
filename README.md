@@ -1,2 +1,2 @@
 # HasherByte
-a program meant to serve as a flashcard platform that requires you to type the answer
+A program meant to serve as a flashcard platform that allows a user to build a flashcard stack, and review by typing the definition to each term.
