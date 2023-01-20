@@ -1,13 +1,11 @@
-
 import java.io.*;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 // HasherBytes Flashcards//
 
-public class FlashCardMain { 
+public class FlashCardMain {
     
     
     static String keyOf;
@@ -27,6 +25,9 @@ public class FlashCardMain {
 
     private Scanner reader = new Scanner(System.in);
 
+
+    //Build a cardset and continue to accept terms and definitions until
+    // user types DONE
     public HashMap<String, String> setBuilder(){
         String DONE = "DONE";
         boolean go = false;
@@ -53,13 +54,13 @@ public class FlashCardMain {
             }
           
             
-            
         }
         
         return cardSet;
 
     }
 
+    //Build a function to review terms of a previously created set
     public void reviewTerms(){
         double correctIter = 0;
         double incorrectIter = 0;
@@ -78,11 +79,16 @@ public class FlashCardMain {
             }
             
         }
+
+        //Give the student a grade
         double gradePercent = correctIter / cardSet.size();
         System.out.print("You got " + correctIter + " terms correct, ");
         System.out.println("and " + incorrectIter + " terms incorrect.");
 
         System.out.println("Grade = " + gradePercent*100 + "%");
+
+        //clear the cardset to prevent current cardSet from interfereing with future cardsets
+
         cardSet.clear();
     }
 
@@ -90,6 +96,9 @@ public class FlashCardMain {
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
      */
+
+     // write the recently created card set into a .txt files to be saved for later use
+
     public void writeOut() throws FileNotFoundException, UnsupportedEncodingException{
         BufferedWriter writer = null;
         
@@ -126,7 +135,8 @@ public class FlashCardMain {
             }
         }
         
-    
+    // create a function that reads a .txt back into a hashmap
+
     public HashMap<String, String> readIn() throws Exception{
         System.out.println("What is your file's name?");
         String nameMe = reader.nextLine() + ".txt";
@@ -163,6 +173,7 @@ public class FlashCardMain {
     finally {
 
         // Always close the BufferedReader
+
         if (takeIn != null) {
             try {
                 takeIn.close();
@@ -180,6 +191,8 @@ public class FlashCardMain {
     public static void main(String [] args) throws Exception {
         FlashCardMain firstSet = new FlashCardMain(keyOf, valuesOf, cardSet);
         
+        // Declare strings for future input
+
         String A = "A";
         String a = "a";
 
@@ -187,9 +200,9 @@ public class FlashCardMain {
         String b = "b";
         String E = "END";
       
+        // 
         Scanner choiceReader = new Scanner(System.in);
-        Scanner loopReader = new Scanner(System.in);
-        Scanner mainReader = new Scanner(System.in);
+        
        
         String chooseAction;
         System.out.println("Type END to exit after/before reviewing/building a set. ");
@@ -227,9 +240,9 @@ public class FlashCardMain {
         
             
         }
-            mainReader.close();
+           
             choiceReader.close();
-            loopReader.close();
+            
     }
     
         //firstSet.reviewTerms();
